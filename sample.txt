@@ -1,0 +1,9 @@
+# Sample Project
+
+This is a sample project to demonstrate how to create a file and push it to a GitHub repository using Visual Studio Code.
+
+## How to Use
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/your-repository.git
