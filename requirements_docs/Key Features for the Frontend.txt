@@ -1,0 +1,15 @@
+Key Features for the Frontend:
+
+User Interface:
+Input Field: A text input field where users can type their questions related to ethics, compliance, and company policies.
+Submit Button: A button to submit the user's query to the backend for processing.
+Response Display: A section to display the chatbot’s response, which would include the relevant policy or answer to the user’s query.
+
+Frontend-Backend Communication:
+The frontend will communicate with the Flask-based backend API. The frontend will send the user's query (as a POST request) to the backend, and the backend will process the request, interact with the AI model (like OpenAI GPT), and return the most relevant policy to display.
+
+Real-Time Interactivity:
+Once the user submits a query, the frontend will make an asynchronous API call (using Axios or Fetch) to the backend, and the chatbot’s response will be displayed in real-time without the need to reload the page.
+
+Error Handling:
+Display appropriate error messages if the backend returns an error (for example, if the query could not be processed, or if there’s an issue with the backend).

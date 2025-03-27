@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Praxion AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/style.css"> 
+</head>
+<body>
+    <div class="main-wrapper">
+        
+        <!-- Homepage Section -->
+        <div class="homepage">
+            <h1>Welcome to Praxion AI</h1>
+            <p>Your virtual assistant for compliance and ethics-related queries.</p>
+            <button onclick="showChat()">Start Chat</button>
+        </div>
+
+        <!-- Chat Container -->
+        <div id="chatContainer" class="chat-container hidden">
+            <h2>Praxion AI</h2>
+            <button class="close-chat" onclick="closeChat()">×</button>
+            <div class="chat-box" id="chatBox"></div>
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="Type your question..." />
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../static/js/main.js"></script>
+</body>
+</html>

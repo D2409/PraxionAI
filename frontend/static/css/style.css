@@ -1,0 +1,140 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.main-wrapper {
+    display: flex;
+    height: 100vh;
+    width: 100vw; /* FIXED: Full screen width */
+    
+}
+
+/* Homepage Section */
+.homepage {
+    flex: 1;
+    background: linear-gradient(to bottom right, #d6e4ff, #f4f4f4);
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.homepage h1 {
+    font-size: 40px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.homepage p {
+    font-size: 20px;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.homepage button {
+    padding: 12px 24px;
+    font-size: 18px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Chat Section */
+.chat-container {
+    width: 400px;
+    height: calc(100vh - 40px); /* reduce height a bit */
+    margin-top: 20px; /* push it slightly down from the top */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    left: 20px;
+    background: white;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 16px; /* optional: adds soft rounded edge at the top */
+}
+
+
+.chat-container.hidden {
+    display: none;
+}
+
+.chat-box {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 40px; /* Give space below header */
+    margin-bottom: 10px;
+}
+
+.msg {
+    padding: 10px 15px;
+    border-radius: 18px;
+    margin-bottom: 10px;
+    width: fit-content;
+    max-width: 80%;
+    clear: both;
+}
+
+.user {
+    background: #007bff;
+    color: white;
+    float: right;
+}
+
+.bot {
+    background: #e0e0e0;
+    float: left;
+}
+
+.input-area {
+    display: flex;
+    gap: 10px;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    background: #007bff;
+    color: white;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Close button */
+.close-chat {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s;
+}
+
+.close-chat:hover {
+    color: #000;
+}
