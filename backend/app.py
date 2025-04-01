@@ -275,6 +275,7 @@ def chatbot():
         return jsonify({"response": "Please enter a valid message."})
 
     # Use the RAG-based function to get a smart response
+    # bot_response = get_response(user_message)
     bot_response = get_response(user_message)
 
     return jsonify({"response": bot_response})
