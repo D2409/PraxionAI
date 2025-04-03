@@ -25,3 +25,7 @@ Thumbs.db
 
 # Hugging Face
 .cache/
+
+backend/temp_uploads
+backend/chroma_db_policies
+modelling/chroma_db_policies

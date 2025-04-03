@@ -8,11 +8,13 @@ from flask import Flask, render_template
 from flask_cors import CORS
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader 
+from werkzeug.utils import secure_filename
+import uuid
 import os
 import sys
 sys.path.append(os.path.abspath("../rag_example"))
 
-from rag_pipeline import get_response  # <- the main function we’ll use
+from rag_pipeline import get_response, setup_qa_chain  # <- the main function we’ll use
 
 
 import difflib
@@ -29,6 +31,7 @@ app = Flask(
 )
 
 CORS(app, resources={r"/ask": {"origins": "*"}})
+CORS(app, resources={r"/setup_chain": {"origins": "*"}})
 
 @app.after_request
 def after_request(response):
@@ -279,6 +282,45 @@ def chatbot():
     bot_response = get_response(user_message)
 
     return jsonify({"response": bot_response})
+
+@app.route('/upload', methods=['GET'])
+def upload_interface():
+    # Render an HTML template that includes a file/directory picker
+    return render_template('upload.html')
+
+# Define a base directory for temporary uploads
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "temp_uploads")
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+@app.route("/setup_chain", methods=["POST"])
+def setup_chain():
+    """
+    Receives aggregated PDF files from a folder (via FormData),
+    saves them into a temporary directory, and calls setup_qa_chain.
+    """
+    uploaded_files = request.files.getlist("pdf_files")
+    if not uploaded_files:
+        return jsonify({"error": "No files received."}), 400
+
+    # Create a unique temporary folder for this upload session
+    session_folder = os.path.join(UPLOAD_FOLDER, str(uuid.uuid4()))
+    os.makedirs(session_folder, exist_ok=True)
+
+    # Save each uploaded file to the temporary folder
+    for file in uploaded_files:
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(session_folder, filename))
+
+    try:
+        # Call your RAG pipeline function which expects a directory of PDFs
+        setup_qa_chain(session_folder)
+        saved_files = os.listdir(session_folder)
+        return jsonify({
+            "message": f"Successfully uploaded {len(saved_files)} file(s) and set up QA chain."
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 """ 

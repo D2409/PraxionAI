@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload PDF Directory - Praxion AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Use your existing style.css for consistent design -->
+  <link rel="stylesheet" href="../static/css/style.css">
+  <style>
+    /* Additional styling for upload interface and progress bar */
+    .upload-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      width: 100vw;
+      background: linear-gradient(to bottom right, #d6e4ff, #f4f4f4);
+      margin: 0;
+    }
+    .upload-container {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+    }
+    .upload-container h2 {
+      font-size: 30px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .upload-container p {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #555;
+    }
+    .upload-container input[type="file"] {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .upload-container button {
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .upload-container button:hover {
+      background-color: #0056b3;
+    }
+    .progress-container {
+      width: 100%;
+      background-color: #f3f3f3;
+      border-radius: 6px;
+      margin-top: 20px;
+      display: none;
+    }
+    .progress-bar {
+      width: 0%;
+      height: 20px;
+      background-color: #007bff;
+      border-radius: 6px;
+      transition: width 0.4s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="upload-wrapper">
+    <div class="upload-container">
+      <h2>Upload PDF Directory</h2>
+      <p>Select the folder that contains your PDF files:</p>
+      <!-- Folder picker: allows selecting an entire folder -->
+      <input type="file" id="pdfDirectory" webkitdirectory directory multiple>
+      <button onclick="uploadFiles()">Upload</button>
+      <div class="progress-container" id="progressContainer">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let simulatedTimer; // To hold our simulated progress timer
+
+    function uploadFiles() {
+      const fileInput = document.getElementById("pdfDirectory");
+      const files = fileInput.files;
+      if (!files.length) {
+        alert("Please select a folder containing PDF files.");
+        return;
+      }
+
+      // Create FormData and append all files
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        formData.append("pdf_files", files[i]);
+      }
+
+      // Show the progress bar
+      const progressContainer = document.getElementById("progressContainer");
+      const progressBar = document.getElementById("progressBar");
+      progressContainer.style.display = "block";
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/setup_chain", true);
+
+      // Track upload progress (this covers the file upload part)
+      xhr.upload.addEventListener("progress", function(e) {
+        if (e.lengthComputable) {
+          const percentComplete = (e.loaded / e.total) * 50; // Scale to 50%
+          progressBar.style.width = percentComplete + "%";
+        }
+      }, false);
+
+      // When upload is finished, start a simulated timer for server processing
+      xhr.upload.addEventListener("load", function() {
+        let currentProgress = parseFloat(progressBar.style.width) || 50;
+        simulatedTimer = setInterval(() => {
+          if (currentProgress < 90) { // Increase until 90%
+            currentProgress += 2; // Increase by 2% every interval
+            progressBar.style.width = currentProgress + "%";
+          }
+        }, 200); // Every 200ms
+      });
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          clearInterval(simulatedTimer); // Stop simulated timer
+          if (xhr.status === 200) {
+            // Complete the progress bar
+            progressBar.style.width = "100%";
+            const response = JSON.parse(xhr.responseText);
+            alert(response.message || "QA chain set up successfully!");
+          } else {
+            alert("Error uploading files.");
+          }
+          // After a short delay, reset the progress bar
+          setTimeout(() => {
+            progressBar.style.width = "0%";
+            progressContainer.style.display = "none";
+          }, 2000);
+        }
+      };
+
+      xhr.send(formData);
+    }
+  </script>
+</body>
+</html>
