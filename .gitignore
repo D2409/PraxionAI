@@ -29,3 +29,4 @@ Thumbs.db
 backend/temp_uploads
 backend/chroma_db_policies
 modelling/chroma_db_policies
+rag_example/chroma_db_policies/

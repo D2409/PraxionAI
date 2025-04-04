@@ -200,11 +200,11 @@ def setup_qa_chain(pdf_directory, persist_directory="./chroma_db_policies", base
 
     print("RetrievalQA chain is set up and ready for queries using Ollama LLM.")
 
-    print("This is the value of qa_chain from setup:", qa_chain)
+    print("This is the value of QA_Chain from setup:", qa_chain)
 
 def get_response(question):
-    print("This is the value of qa_chain from response:", qa_chain)
+    print("This is the value of QA_Chain from response:", qa_chain)
     if qa_chain is None:
-        return "QA chain is not set up yet. Please initialize it first."
+        return "Policy documents have not been uploaded yet. Please upload first."
     answer = qa_chain.run(question)
     return answer
